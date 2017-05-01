@@ -36,6 +36,24 @@
   align-items: center;
 }
 
+.abandoned {
+  position: absolute;
+  right: 7px;
+  bottom: 8px;
+  height: 15px;
+
+  &[data-hint] {
+    &::before,
+    &::after {
+      left: 40%;
+    }
+  }
+}
+
+.abandoned img {
+  width: 51px;
+}
+
 .parsed {
   position: relative;
   left: -24px;
@@ -165,12 +183,12 @@
   }
 }
 
-.iconBox {
+.hoverIcon {
   margin-left: 4px;
+}
 
-  & span {
-    margin-left: 4px;
-  }
+.hoverIcon:first-child {
+  margin-left: 8px;
 }
 
 .pvgnaGuideContainer {

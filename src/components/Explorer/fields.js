@@ -42,6 +42,19 @@ AND match_logs.targetname LIKE '${unitKey}'`,
   key: `kill_${unitKey}`,
 });
 
+const patches = patchData.reverse().map(patch => ({
+  text: patch.name,
+  value: patch.name,
+  key: patch.name,
+}));
+
+const durations = Array(10).fill().map((e, i) => i * 10).map(duration => ({
+  text: `${util.format(strings.time_mm, duration)}`,
+  searchText: util.format(strings.time_mm, duration),
+  value: duration * 60,
+  key: String(duration),
+}));
+
 const fields = (players = [], leagues = [], teams = []) => ({
   select: [{
     text: strings.heading_kills,
@@ -272,13 +285,14 @@ ${props.player && props.player.value ? '' : 'AND player_matches.account_id < pla
     text: strings.explorer_team,
     value: 'teams.name',
     key: 'team',
+  }, {
+    text: strings.explorer_organization,
+    value: 'team_match.team_id',
+    key: 'organization',
   },
   ],
-  patch: patchData.reverse().map(patch => ({
-    text: patch.name,
-    value: patch.name,
-    key: patch.name,
-  })),
+  minPatch: patches,
+  maxPatch: patches,
   hero: Object.keys(heroData).map(heroId => ({
     text: `[${heroId}] ${heroData[heroId].localized_name}`,
     searchText: heroData[heroId].localized_name,
@@ -290,12 +304,8 @@ ${props.player && props.player.value ? '' : 'AND player_matches.account_id < pla
     value: itemName,
     key: itemName,
   })),
-  duration: [10, 20, 30, 40, 50].map(duration => ({
-    text: `> ${util.format(strings.time_mm, duration)}`,
-    searchText: util.format(strings.time_mm, duration),
-    value: duration * 60,
-    key: String(duration),
-  })),
+  minDuration: durations,
+  maxDuration: durations,
   side: [{
     text: strings.general_radiant,
     value: true,
@@ -331,12 +341,19 @@ ${props.player && props.player.value ? '' : 'AND player_matches.account_id < pla
     value: team.team_id,
     key: String(team.team_id),
   })),
+  organization: teams.map(team => ({
+    text: `[${team.team_id}] ${team.name}`,
+    searchText: team.name,
+    value: team.team_id,
+    key: String(team.team_id),
+  })),
   player: players.map(player => ({
     text: `[${player.account_id}] ${player.name}`,
     searchText: player.name,
     value: player.account_id,
     key: String(player.account_id),
   })),
+  order: [{ text: strings.explorer_asc, value: 'ASC', key: 'asc' }, { text: strings.explorer_desc, value: 'DESC', key: 'desc' }],
   /*
   lanePos: Object.keys(strings).filter(str => str.indexOf('lane_pos_') === 0).map(str => {
     const lanePosId = Number(str.substring('lane_pos_'.length));

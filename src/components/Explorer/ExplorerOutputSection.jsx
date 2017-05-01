@@ -40,7 +40,7 @@ class ExplorerOutputSection extends React.Component {
   render() {
     const { rows, fields, expandedBuilder, teamMapping, playerMapping, format } = this.props;
     setTimeout(() => {
-      const firstCol = fields[0].name;
+      const firstCol = fields && fields[0].name;
       redrawGraphs(rows.map(row => ({
         ...row,
         [firstCol]: resolveId(firstCol, row[firstCol], { teamMapping, playerMapping }) }
@@ -57,7 +57,7 @@ class ExplorerOutputSection extends React.Component {
       <Table
         data={(rows || []).slice(0, 1000)}
         columns={(fields || []).map(column => ({
-          displayName: column.name,
+          displayName: column.name === 'count' ? strings.general_matches : column.name,
           field: column.name,
         })).map(column => ({
           ...column,

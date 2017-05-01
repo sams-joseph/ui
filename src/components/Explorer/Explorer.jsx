@@ -35,15 +35,13 @@ import styles from './Explorer.css';
 // TODO split picks/bans by phase
 // TODO mega creep wins (matches table only)
 // TODO gold/kill differential
-// TODO num matches played by team (team_match table)
 // TODO hero combos (3+)
-// TODO lane positions/lane roles
 // TODO num wards placed?
 // TODO num roshans killed?
 // TODO item build rates?
+// TODO lane positions/lane roles (requires storing lane number)
 // TODO AEGIS_STOLEN, AEGIS, DENIED_AEGIS, FIRSTBLOOD, PAUSED (requires player1_slot fix)
 // TODO scan/glyph action (use action rather than CHAT_MESSAGE_SCAN/CHAT_MESSAGE_GLYPH_USED)
-// TODO autostat (combine with GetLiveLeagueGames)
 
 const playerMapping = {};
 const teamMapping = {};
@@ -77,10 +75,13 @@ const ExplorerControlSection = ({ showEditor, toggleEditor, expandedFields, hand
     <ExplorerFormField label={strings.explorer_hero} fields={expandedFields} builderField="hero" handleFieldUpdate={handleFieldUpdate} builder={builder} />
     <ExplorerFormField label={strings.explorer_player} fields={expandedFields} builderField="player" handleFieldUpdate={handleFieldUpdate} builder={builder} />
     <ExplorerFormField label={strings.explorer_team} fields={expandedFields} builderField="team" handleFieldUpdate={handleFieldUpdate} builder={builder} />
+    <ExplorerFormField label={strings.explorer_organization} fields={expandedFields} builderField="organization" handleFieldUpdate={handleFieldUpdate} builder={builder} />
     <ExplorerFormField label={strings.explorer_league} fields={expandedFields} builderField="league" handleFieldUpdate={handleFieldUpdate} builder={builder} />
     <ExplorerFormField label={strings.explorer_region} fields={expandedFields} builderField="region" handleFieldUpdate={handleFieldUpdate} builder={builder} />
-    <ExplorerFormField label={strings.explorer_patch} fields={expandedFields} builderField="patch" handleFieldUpdate={handleFieldUpdate} builder={builder} />
-    <ExplorerFormField label={strings.explorer_duration} fields={expandedFields} builderField="duration" handleFieldUpdate={handleFieldUpdate} builder={builder} />
+    <ExplorerFormField label={strings.explorer_min_patch} fields={expandedFields} builderField="minPatch" handleFieldUpdate={handleFieldUpdate} builder={builder} />
+    <ExplorerFormField label={strings.explorer_max_patch} fields={expandedFields} builderField="maxPatch" handleFieldUpdate={handleFieldUpdate} builder={builder} />
+    <ExplorerFormField label={strings.explorer_min_duration} fields={expandedFields} builderField="minDuration" handleFieldUpdate={handleFieldUpdate} builder={builder} />
+    <ExplorerFormField label={strings.explorer_max_duration} fields={expandedFields} builderField="maxDuration" handleFieldUpdate={handleFieldUpdate} builder={builder} />
     <ExplorerFormField label={strings.explorer_side} fields={expandedFields} builderField="side" handleFieldUpdate={handleFieldUpdate} builder={builder} />
     <ExplorerFormField label={strings.th_result} fields={expandedFields} builderField="result" handleFieldUpdate={handleFieldUpdate} builder={builder} />
     <ExplorerFormField
@@ -92,6 +93,7 @@ const ExplorerControlSection = ({ showEditor, toggleEditor, expandedFields, hand
     {/* <ExplorerFormField label={strings.explorer_lane_pos} fields={expandedFields} builderField="lanePos" handleFieldUpdate={handleFieldUpdate} builder={builder} />*/}
     <ExplorerFormField label={strings.explorer_min_date} builderField="minDate" handleFieldUpdate={handleFieldUpdate} builder={builder} isDateField />
     <ExplorerFormField label={strings.explorer_max_date} builderField="maxDate" handleFieldUpdate={handleFieldUpdate} builder={builder} isDateField />
+    <ExplorerFormField label={strings.explorer_order} fields={expandedFields} builderField="order" handleFieldUpdate={handleFieldUpdate} builder={builder} />
   </div>
   <div style={{ display: showEditor ? 'block' : 'none' }}>
     <div
