@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import {
   getPlayerTotals,
 } from 'actions';
-import { playerTotals } from 'reducers';
 import Container from 'components/Container';
 import strings from 'lang';
 import {
@@ -71,7 +70,7 @@ const Totals = ({ data, error, loading }) => (<div>
 </div>);
 
 const getData = (props) => {
-  props.getPlayerTotals(props.playerId, props.location.query);
+  props.getPlayerTotals(props.playerId, props.location.search);
 };
 
 class RequestLayer extends React.Component {
@@ -90,10 +89,10 @@ class RequestLayer extends React.Component {
   }
 }
 
-const mapStateToProps = (state, { playerId }) => ({
-  data: playerTotals.getTotalsList(state, playerId),
-  error: playerTotals.getError(state, playerId),
-  loading: playerTotals.getLoading(state, playerId),
+const mapStateToProps = state => ({
+  data: state.app.playerTotals.data,
+  error: state.app.playerTotals.error,
+  loading: state.app.playerTotals.loading,
 });
 
 const mapDispatchToProps = dispatch => ({

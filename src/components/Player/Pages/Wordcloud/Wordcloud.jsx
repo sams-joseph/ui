@@ -5,15 +5,12 @@ import {
 import {
   getPlayerWordcloud,
 } from 'actions';
-import {
-  playerWordcloud,
-} from 'reducers';
 import Container from 'components/Container';
 import Wordcloud from 'components/Wordcloud';
 import strings from 'lang';
 
 const getData = (props) => {
-  props.getPlayerWordcloud(props.playerId, props.location.query);
+  props.getPlayerWordcloud(props.playerId, props.location.search);
 };
 
 class RequestLayer extends React.Component {
@@ -42,12 +39,10 @@ class RequestLayer extends React.Component {
   }
 }
 
-const mapStateToProps = (state, {
-  playerId,
-}) => ({
-  data: playerWordcloud.getPlayerWordcloud(state, playerId),
-  loading: playerWordcloud.getLoading(state, playerId),
-  error: playerWordcloud.getError(state, playerId),
+const mapStateToProps = state => ({
+  data: state.app.playerWordcloud.data,
+  loading: state.app.playerWordcloud.loading,
+  error: state.app.playerWordcloud.error,
 });
 
 const mapDispatchToProps = dispatch => ({

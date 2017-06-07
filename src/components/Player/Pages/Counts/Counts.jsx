@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import {
   getPlayerCounts,
 } from 'actions';
-import { playerCounts } from 'reducers';
 import Table from 'components/Table';
 import Container from 'components/Container';
 import strings from 'lang';
@@ -23,7 +22,7 @@ const Counts = ({ counts, error, loading }) => (
 );
 
 const getData = (props) => {
-  props.getPlayerCounts(props.playerId, props.location.query);
+  props.getPlayerCounts(props.playerId, props.location.search);
 };
 
 class RequestLayer extends React.Component {
@@ -44,10 +43,10 @@ class RequestLayer extends React.Component {
   }
 }
 
-const mapStateToProps = (state, { playerId }) => ({
-  counts: playerCounts.getOnlyData(state, playerId),
-  error: playerCounts.getError(state, playerId),
-  loading: playerCounts.getLoading(state, playerId),
+const mapStateToProps = state => ({
+  counts: state.app.playerCounts.data,
+  error: state.app.playerCounts.error,
+  loading: state.app.playerCounts.loading,
 });
 
 const mapDispatchToProps = dispatch => ({

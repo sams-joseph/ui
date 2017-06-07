@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { getPlayerWardmap } from 'actions';
-import { playerWardmap } from 'reducers';
 import Heatmap from 'components/Heatmap';
 import Container from 'components/Container';
 import strings from 'lang';
@@ -9,7 +8,7 @@ import { unpackPositionData } from 'utility';
 import styles from './Wardmap.css';
 
 const getData = (props) => {
-  props.getPlayerWardmap(props.playerId, props.location.query);
+  props.getPlayerWardmap(props.playerId, props.location.search);
 };
 
 class RequestLayer extends React.Component {
@@ -48,10 +47,10 @@ class RequestLayer extends React.Component {
   }
 }
 
-const mapStateToProps = (state, { playerId }) => ({
-  data: playerWardmap.getPlayerWardmap(state, playerId),
-  loading: playerWardmap.getLoading(state, playerId),
-  error: playerWardmap.getError(state, playerId),
+const mapStateToProps = state => ({
+  data: state.app.playerWardmap.data,
+  loading: state.app.playerWardmap.loading,
+  error: state.app.playerWardmap.data.error,
 });
 
 const mapDispatchToProps = dispatch => ({

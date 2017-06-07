@@ -2,18 +2,14 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Avatar from 'material-ui/Avatar';
 import Badge from 'material-ui/Badge';
-import { player } from 'reducers';
 import strings from 'lang';
 import Error from 'components/Error';
 import Spinner from 'components/Spinner';
-import { getMetadataUser } from 'reducers/metadata';
 import styles from './PlayerHeader.css';
 import PlayerStats from './PlayerStats';
 import PlayerBadges from './PlayerBadges';
 import PlayerButtons from './PlayerButtons';
 
-export const HEADER_SM_BREAK = 660;
-export const HEADER_MD_BREAK = 900;
 const LARGE_IMAGE_SIZE = 124;
 
 const getRegistrationBadge = registered => registered && (
@@ -24,7 +20,7 @@ const getRegistrationBadge = registered => registered && (
   />
 );
 
-const PlayerHeader = ({ playerName, officialPlayerName, playerId, picture, registered, loading, error, width, playerSoloCompetitiveRank, loggedInUser }) => {
+const PlayerHeader = ({ playerName, officialPlayerName, playerId, picture, registered, loading, error, small, extraSmall, playerSoloCompetitiveRank, loggedInUser }) => {
   if (error) {
     return <Error />;
   }
@@ -42,11 +38,11 @@ const PlayerHeader = ({ playerName, officialPlayerName, playerId, picture, regis
   };
 
   const avatarStyle = {
-    marginLeft: width > HEADER_MD_BREAK ? 30 : 0,
-    marginRight: width > HEADER_SM_BREAK ? 30 : 0,
+    marginLeft: small ? 30 : 0,
+    marginRight: extraSmall ? 30 : 0,
   };
 
-  if (width <= HEADER_MD_BREAK) {
+  if (!small) {
     badgeStyle = {
       ...badgeStyle,
       marginLeft: -1 * (LARGE_IMAGE_SIZE / 2) * 0.75,
@@ -78,25 +74,25 @@ const PlayerHeader = ({ playerName, officialPlayerName, playerId, picture, regis
             <span className={styles.playerName}>{officialPlayerName || playerName}</span>
             <PlayerBadges playerId={playerId} />
           </div>
-          <PlayerStats playerId={playerId} loggedInId={loggedInUser && String(loggedInUser.account_id)} compact={width <= HEADER_SM_BREAK} />
-          <PlayerButtons playerId={playerId} playerSoloCompetitiveRank={playerSoloCompetitiveRank} compact={width <= HEADER_SM_BREAK} />
+          <PlayerStats playerId={playerId} loggedInId={loggedInUser && String(loggedInUser.account_id)} compact={!small} />
+          <PlayerButtons playerId={playerId} playerSoloCompetitiveRank={playerSoloCompetitiveRank} compact={!small} />
         </div>
       </div>
     </div>
   );
 };
 
-const mapStateToProps = (state, ownProps) => ({
-  playerId: ownProps.playerId,
-  loading: player.getLoading(state, ownProps.playerId),
-  error: player.getError(state, ownProps.playerId),
-  playerName: player.getPlayerName(state, ownProps.playerId),
-  officialPlayerName: player.getOfficialPlayerName(state, ownProps.playerId),
-  playerSoloCompetitiveRank: player.getSoloCompetitiveRank(state, ownProps.playerId),
-  picture: player.getPictureFull(state, ownProps.playerId),
-  registered: player.getLastLogin(state, ownProps.playerId),
-  width: state.browser.width,
-  loggedInUser: getMetadataUser(state),
+const mapStateToProps = state => ({
+  loading: state.app.player.loading,
+  error: state.app.player.error,
+  playerName: (state.app.player.data.profile || {}).personaname,
+  officialPlayerName: (state.app.player.data.profile || {}).name,
+  playerSoloCompetitiveRank: state.app.player.data.solo_competitive_rank,
+  picture: (state.app.player.data.profile || {}).avatarfull,
+  registered: (state.app.player.data.profile || {}).last_login,
+  small: state.browser.greaterThan.small,
+  extraSmall: state.browser.greaterThan.extraSmall,
+  loggedInUser: state.app.metadata.data.user,
 });
 
 export default connect(mapStateToProps)(PlayerHeader);

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { formatSeconds, calculateDistance, calculateRelativeXY, bindWidth } from 'utility';
 import ReactTooltip from 'react-tooltip';
-import Measure from 'react-measure';
 import classNames from 'classnames';
 import { IconRadiant, IconDire, IconDot } from 'components/Icons';
 import TeamTable from 'components/Match/TeamTable';
@@ -11,6 +10,7 @@ import PlayerThumb from 'components/Match/PlayerThumb';
 import strings from 'lang';
 import Timeline from 'components/Match/Overview/Timeline';
 import DotaMap from 'components/DotaMap';
+import Measure from 'react-measure';
 import styles from './TeamfightMap.css';
 
 const MAP_WIDTH = 400;
@@ -309,7 +309,8 @@ class TeamfightMap extends Component {
                   <TeamTable
                     players={teamfight.players && teamfight.players.filter(p => p.participate)}
                     columns={teamfightColumns}
-                    radiantTeam={this.props.match.radiant_team} direTeam={this.props.match.dire_team}
+                    radiantTeam={this.props.match.radiant_team}
+                    direTeam={this.props.match.dire_team}
                   />
                 </div>
               </div>
